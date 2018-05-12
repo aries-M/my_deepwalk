@@ -1,0 +1,8 @@
+num_paths: 10
+path_length: 10
+embedding_size: 20
+learning_rate: 1.0
+decay_rate: 0.96
+epochs_to_train: 20001
+batch_size: 100
+num_skips: 2
