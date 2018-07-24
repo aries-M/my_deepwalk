@@ -20,7 +20,7 @@ flags.DEFINE_float("decay_rate", 0.96, "Decay learning rate.")
 flags.DEFINE_integer("num_neg_samples", 10,
                      "Negative samples per training example.")
 flags.DEFINE_integer("hidden_size", 20, "Number of cells in hidden layer for LSTM. ")
-flags.DEFINE_integer("batch_size", 100,
+flags.DEFINE_integer("batch_size", 50,
                      "Number of training examples processed per step "
                      "(size of a minibatch).")
 flags.DEFINE_integer("num_sequences", 50,
@@ -37,6 +37,8 @@ flags.DEFINE_integer("summary_interval", 5,
 flags.DEFINE_integer("checkpoint_interval", 600,
                      "Checkpoint the model (i.e. save the parameters) every n "
                      "seconds (rounded up to statistics interval).")
+flags.DEFINE_integer("begin_time", 0,
+                     "Time length of graph.")
 
 FLAGS = flags.FLAGS
 
@@ -63,6 +65,7 @@ class Options(object):
         self.summary_interval=FLAGS.summary_interval
         self.checkpoint_interval = FLAGS.checkpoint_interval
         self.save_path=FLAGS.save_path
+        self.begin_time=FLAGS.begin_time
         if len(self.save_path)>0 and not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 

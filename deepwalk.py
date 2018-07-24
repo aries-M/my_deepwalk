@@ -211,7 +211,7 @@ def save_config(opt, save_path):
 
 	openFile.close()
 
-
+begin_time_list=['2010/10/01 00:00:00','2010/10/04 00:00:00','2010/10/07 00:00:00','2010/10/10 00:00:00','2010/10/13 00:00:00']
 
 # relation inferring, link prediction, potential link prediction
 def normal_run(opt, save_path):
@@ -233,7 +233,7 @@ def normal_run(opt, save_path):
 		with tf.device('/cpu:0'):
 			model=DeepWalk(session,opt)
 
-			begin_time_str='2010/10/01 00:00:00'
+			begin_time_str=begin_time_list[opt.begin_time]
 			stop_time_str='2010/10/24 23:59:59'
 			split_options=graph.GraphSplitOptions(begin_time_str,stop_time_str)
 			model.build_dataset(split_options,False,save_path)
@@ -248,11 +248,11 @@ def normal_run(opt, save_path):
 	print('begin task relation inferring')
 	inferring_task=tasks.run_task('colleague_relations',model.final_embeddings,model.filenames)
 
-	print('begin task potential link prediction')
-	prediction2_task=tasks.run_task('potential_link_prediction',model.final_embeddings,model.filenames)
+	#print('begin task potential link prediction')
+	#prediction2_task=tasks.run_task('potential_link_prediction',model.final_embeddings,model.filenames)
 
 
-	return (inferring_task, prediction2_task)
+	return inferring_task
 
 
 # link reconstruction
@@ -295,23 +295,21 @@ def link_reconstruction_run(opt, save_path):
 	return reconstruction_task
 
 
-def normal_main():
-	n=10
-	result=np.zeros((2,4))
+def normal_main(basic_path='tmpdata/deepwalk/normal'):
+	n=5
+	result=[]
 	opt=options.Options()
 	for i in range(n):
-		save_path=os.path.join('tmpdata/deepwalk/normal',str(i))
+		save_path=os.path.join(basic_path,str(opt.begin_time),str(i))
 		if not os.path.exists(save_path):
 			os.makedirs(save_path)
 		tmp=normal_run(opt,save_path)
-		for t in range(2):
-			for m in range(4):
-				result[t][m]=result[t][m]+tmp[t][m]
-	result=result/n
+		result.append(tmp)
+	result=np.array(result)
+	result=np.mean(result,0)
 	print('-----------------------')
 	print('average\t\taccuracy\t\tprecision\t\trecall\t\tF1')
-	print('inferring',result[0][0],result[0][1],result[0][2],result[0][3])
-	print('predicting',result[1][0],result[1][1],result[1][2],result[1][3])
+	print('inferring',result[0],result[1],result[2],result[3])
 	print('-----------------------')
 
 
@@ -334,12 +332,12 @@ def reconstruction_main():
 
 
 id2task={0:'normal', 1:'link_reconstruction'}
-task_id=1
+task_id=0
 
 
 def main(_):
 	if id2task[task_id]=='normal':
-		normal_main()
+		normal_main('tmpdata/length/deepwalk')
 	else:
 		reconstruction_main()
 

@@ -113,7 +113,7 @@ class TemporalGraph(object):
 
 
 	def delete_edge_from_graph(self, ratio=0.3):
-		delete_num=int(self.graphs[-1].number_of_nodes()*ratio)
+		delete_num=int(self.graphs[-1].number_of_edges()*ratio)
 		edge_list=list(self.graphs[-1].edges)
 		delete_list=random.sample(edge_list,delete_num)
 		for i in range(0,self.num_time):

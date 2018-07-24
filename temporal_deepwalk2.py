@@ -390,7 +390,7 @@ def multiscale_run(opt, is_reconstruct, save_path):
 			filenames=model2.filenames
 
 	embeddings=np.concatenate((model1.final_embeddings[:,-1,:],model2.final_embeddings[:,-1,:]),axis=1)
-	save_embeddings((model1.final_embeddings[:,-1,:],model2.final_embeddings[:,-1,:]),os.path.join(save_path,'embeddings.txt'))
+	save_embeddings_for_multiscale((model1.final_embeddings[:,-1,:],model2.final_embeddings[:,-1,:]),os.path.join(save_path,'embeddings.txt'))
 
 	# Task for embeddings	
 	if not is_reconstruct:

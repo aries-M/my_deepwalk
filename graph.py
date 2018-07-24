@@ -78,7 +78,7 @@ class Graph(object):
 
 
 	def delete_edge_from_graph(self, ratio=0.3):
-		delete_num=int(self.graph.number_of_nodes()*ratio)
+		delete_num=int(self.graph.number_of_edges()*ratio)
 		edge_list=list(self.graph.edges)
 		delete_list=random.sample(edge_list,delete_num)
 		self.graph.remove_edges_from(delete_list)
